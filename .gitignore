@@ -1,0 +1,165 @@
+# ============================================
+# Environment Files (NEVER commit secrets)
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+.env.staging
+
+# ============================================
+# Node.js / npm / yarn / pnpm
+# ============================================
+node_modules/
+.npm
+.pnp
+.pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ============================================
+# Build & Distribution Output
+# ============================================
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.cache/
+*.tsbuildinfo
+
+# ============================================
+# NestJS Backend
+# ============================================
+server/dist/
+server/build/
+server/coverage/
+server/*.tsbuildinfo
+server/.nestjs_repl_history
+
+# ============================================
+# React Frontend
+# ============================================
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/.nuxt/
+frontend/coverage/
+
+# ============================================
+# TypeScript
+# ============================================
+*.tsbuildinfo
+*.d.ts.map
+
+# ============================================
+# Testing
+# ============================================
+coverage/
+.nyc_output/
+*.lcov
+junit.xml
+
+# ============================================
+# Docker
+# ============================================
+*.env.docker
+docker-compose.override.yml
+docker-compose.*.yml
+.dockerignore
+Dockerfile.*
+!Dockerfile
+!docker-compose.yml
+
+# Docker volumes & data
+postgres-data/
+redis-data/
+mongo-data/
+pgsql/
+pgdata/
+data/
+volumes/
+
+# ============================================
+# Logs
+# ============================================
+logs/
+*.log
+log/
+
+# ============================================
+# IDE & Editor
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# ============================================
+# Redis
+# ============================================
+dump.rdb
+*.rdb
+appendonly.aof
+*.aof
+redis.conf.override
+
+# ============================================
+# PostgreSQL
+# ============================================
+*.dump
+*.sql.gz
+*.backup
+*.pgdump
+
+# ============================================
+# AI / LLM / ML Caches
+# ============================================
+.cache/
+__pycache__/
+models/
+*.gguf
+*.bin
+*.onnx
+*.pt
+*.pth
+*.safetensors
+
+# ============================================
+# Operating System Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Miscellaneous
+# ============================================
+*.local
+.history/
+.temp/
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
