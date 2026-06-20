@@ -1,0 +1,13 @@
+# Build artifacts and deps — Vercel installs/builds fresh on its own
+node_modules
+.next
+out
+
+# Local env files (set these in the Vercel dashboard instead)
+.env
+.env.*
+!.env.example
+
+# Misc
+.DS_Store
+*.log

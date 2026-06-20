@@ -85,7 +85,7 @@ export function Sidebar() {
             matching the top bar's bottom border to the pixel. */}
         <div className="border-b">
           <div className="flex h-12 items-center gap-2 px-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:justify-center">
               {/* Expanded: full horizontal lockup (light/dark wordmark swap) */}
               <span className="group-data-[collapsible=icon]:hidden">
                 <Image
@@ -189,13 +189,13 @@ export function Sidebar() {
                   />
                 }
               >
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-8 w-8 shrink-0">
                   <AvatarImage src={getIdenticon(user?.email || user?.name)} alt={user?.name} />
                   <AvatarFallback className="bg-primary-accent text-white text-xs">
                     {user?.name ? getInitials(user.name) : 'U'}
                   </AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                   <span className="truncate font-semibold">
                     {user?.name || 'User'}
                   </span>
@@ -203,7 +203,7 @@ export function Sidebar() {
                     {user?.email || 'user@example.com'}
                   </span>
                 </div>
-                <ChevronUp className="ml-auto" />
+                <ChevronUp className="ml-auto group-data-[collapsible=icon]:hidden" />
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="top"
