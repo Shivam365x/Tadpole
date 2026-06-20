@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BarChart3, TrendingUp, Users, GitPullRequest, Plus, Filter } from 'lucide-react';
+import { getIdenticon } from '@/lib/identicon';
 
 export default function AnalyticsPage() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -113,7 +114,7 @@ export default function AnalyticsPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
                           <Avatar className="h-10 w-10">
-                            <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${dev.name}`} />
+                            <AvatarImage src={getIdenticon(dev.name)} alt={dev.name} />
                             <AvatarFallback className="bg-blue-600 text-xs">{dev.avatar}</AvatarFallback>
                           </Avatar>
                           <div>
@@ -227,7 +228,7 @@ export default function AnalyticsPage() {
                           {index + 1}
                         </div>
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${dev.name}`} />
+                          <AvatarImage src={getIdenticon(dev.name)} alt={dev.name} />
                           <AvatarFallback className="bg-blue-600 text-xs">{dev.avatar}</AvatarFallback>
                         </Avatar>
                         <span className="font-medium text-sm">{dev.name}</span>

@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { UserPlus, Mail, MoreVertical, Plus, Filter } from 'lucide-react';
+import { getIdenticon } from '@/lib/identicon';
 
 export default function UsersPage() {
   const [activeTab, setActiveTab] = useState('all');
@@ -139,7 +140,7 @@ export default function UsersPage() {
                     >
                       <div className="flex items-center space-x-3">
                         <Avatar className="h-10 w-10">
-                          <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} />
+                          <AvatarImage src={getIdenticon(user.email || user.name)} alt={user.name} />
                           <AvatarFallback className="bg-blue-600 text-xs">{user.avatar}</AvatarFallback>
                         </Avatar>
                         <div>

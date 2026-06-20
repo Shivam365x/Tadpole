@@ -32,7 +32,8 @@ import {
   Users,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getIdenticon } from '@/lib/identicon';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -189,6 +190,7 @@ export function Sidebar() {
                 }
               >
                 <Avatar className="h-8 w-8">
+                  <AvatarImage src={getIdenticon(user?.email || user?.name)} alt={user?.name} />
                   <AvatarFallback className="bg-primary-accent text-white text-xs">
                     {user?.name ? getInitials(user.name) : 'U'}
                   </AvatarFallback>

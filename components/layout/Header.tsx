@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { getIdenticon } from '@/lib/identicon';
 import { Badge } from '@/components/ui/badge';
 import { useAuthStore } from '@/stores/authStore';
 import { useUIStore } from '@/stores/uiStore';
@@ -141,7 +142,7 @@ export function Header() {
             <DropdownMenuTrigger>
               <Button variant="ghost" className="space-x-2">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.avatar} />
+                  <AvatarImage src={user?.avatar || getIdenticon(user?.email || user?.name)} alt={user?.name} />
                   <AvatarFallback className="bg-blue-600 text-white">
                     {user?.name?.charAt(0) || 'U'}
                   </AvatarFallback>

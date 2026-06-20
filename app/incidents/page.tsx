@@ -201,6 +201,7 @@ export default function IncidentsPage() {
                                 size="sm"
                                 variant="outline"
                                 disabled={incident.status === 'resolved' || incident.status === 'closed'}
+                                className="w-24 justify-center"
                               >
                                 {incident.status === 'open' ? 'Investigate' : 'Resolve'}
                               </Button>
