@@ -1,26 +1,171 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-header: hsl(var(--header));
+  --color-header-foreground: hsl(var(--header-foreground));
+  --color-primary-accent: hsl(var(--primary-accent));
+  --font-sans: var(--font-inter);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar: hsl(var(--sidebar));
+  --color-chart-5: hsl(var(--chart-5));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-ring: hsl(var(--ring));
+  --color-input: hsl(var(--input));
+  --color-border: hsl(var(--border));
+  --color-destructive: hsl(var(--destructive));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card: hsl(var(--card));
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+
+  /* Langfuse-inspired typography - smaller for higher density */
+  --text-xs: 0.7rem;
+  --text-sm: 0.825rem;
+  --text-base: 0.9rem;
+  --text-lg: 1.1rem;
+  --text-xl: 1.2rem;
+  --text-2xl: 1.3rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 220 8.9% 46.1%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 210 33% 27%;
+  --input: 210 33% 27%;
+  --ring: 215 20.2% 65.1%;
+  --radius: 0.5rem;
+  --header: 210 40% 98%;
+  --header-foreground: 222.2 84% 4.9%;
+  --primary-accent: 243 75.4% 58.6%;
+  --sidebar: 0 0% 100%;
+  --sidebar-foreground: 222.2 84% 4.9%;
+  --sidebar-primary: 243 75.4% 58.6%;
+  --sidebar-primary-foreground: 222.2 47.4% 10.2%;
+  --sidebar-accent: 210 73% 87%;
+  --sidebar-accent-foreground: 210 33% 27%;
+  --sidebar-border: 210 33% 27%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+  --chart-1: 239 84% 58%;
+  --chart-2: 188 94% 43%;
+  --chart-3: 240 4% 46%;
+  --chart-4: 271 91% 65%;
+  --chart-5: 48 96% 47%;
+}
+
+.light {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --header: 210 40% 98%;
+  --header-foreground: 222.2 84% 4.9%;
+  --primary-accent: 243 75.4% 58.6%;
+  --sidebar: 0 0% 100%;
+  --sidebar-foreground: 222.2 84% 4.9%;
+  --sidebar-primary: 243 75.4% 58.6%;
+  --sidebar-primary-foreground: 222.2 47.4% 10.2%;
+  --sidebar-accent: 210 73% 87%;
+  --sidebar-accent-foreground: 210 33% 27%;
+  --sidebar-border: 210 33% 27%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 83%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 88%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 88%;
+  --primary: 210 40% 83%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 88%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 20% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --border: 210 33% 27%;
+  --input: 210 33% 27%;
+  --ring: 217.2 32.6% 17.5%;
+  --header: 217.2 32.6% 15%;
+  --header-foreground: 210 40% 83%;
+  --primary-accent: 246 55% 70%;
+  --sidebar: 222.2 84% 4.9%;
+  --sidebar-foreground: 210 40% 83%;
+  --sidebar-primary: 246 55% 70%;
+  --sidebar-primary-foreground: 222.2 47.4% 10.2%;
+  --sidebar-accent: 210 73% 87%;
+  --sidebar-accent-foreground: 210 33% 27%;
+  --sidebar-border: 210 33% 27%;
+  --sidebar-ring: 224.3 76.3% 46%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
   }
+  body {
+    @apply bg-background text-foreground;
+    font-size: var(--text-base);
+    font-family: var(--font-sans);
+    border-color: hsl(var(--border));
+  }
+  html {
+    @apply antialiased;
+  }
+
+  /* Apply smaller text sizes */
+  .text-xs { font-size: var(--text-xs) !important; }
+  .text-sm { font-size: var(--text-sm) !important; }
+  .text-base { font-size: var(--text-base) !important; }
+  .text-lg { font-size: var(--text-lg) !important; }
+  .text-xl { font-size: var(--text-xl) !important; }
+  .text-2xl { font-size: var(--text-2xl) !important; }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Container layout like Langfuse */
+@layer utilities {
+  .container-layout {
+    @apply w-full px-4 md:px-6 lg:px-8;
+  }
 }
