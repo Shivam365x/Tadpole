@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Sidebar as SidebarPrimitive,
   SidebarContent,
@@ -32,17 +32,22 @@ import {
   Users,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
+import { useUIStore } from '@/stores/uiStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getIdenticon } from '@/lib/identicon';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronUp } from 'lucide-react';
+import { ChevronUp, UserCog, Palette, LogOut, Sun, Moon, Check } from 'lucide-react';
+import { GoToMenu } from '@/components/layout/GoToMenu';
 
 const mainNavItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
@@ -66,7 +71,9 @@ const secondaryNavItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuthStore();
+  const { theme, setTheme } = useUIStore();
 
   const getInitials = (name: string) => {
     return name
@@ -120,6 +127,17 @@ export function Sidebar() {
       </SidebarHeader>
 
       <SidebarContent>
+        {/* Go to — command-palette search to jump to any page (⌘K) */}
+        <SidebarGroup className="px-2 pb-0">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <GoToMenu />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
         {/* Main Navigation */}
         <SidebarGroup className="px-2">
           <SidebarGroupContent>
@@ -206,30 +224,62 @@ export function Sidebar() {
                 <ChevronUp className="ml-auto group-data-[collapsible=icon]:hidden" />
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                side="top"
+                side="right"
                 align="end"
-                className="w-[--radix-dropdown-menu-trigger-width] min-w-56"
+                sideOffset={4}
+                className="min-w-56"
               >
-                <DropdownMenuLabel>
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
+                {/* Account header */}
+                <div className="flex items-center gap-2 px-1.5 py-1.5">
+                  <Avatar className="h-8 w-8 shrink-0">
+                    <AvatarImage src={getIdenticon(user?.email || user?.name)} alt={user?.name} />
+                    <AvatarFallback className="bg-primary-accent text-white text-xs">
+                      {user?.name ? getInitials(user.name) : 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left leading-tight">
+                    <span className="truncate text-sm font-medium">
                       {user?.name || 'User'}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
+                    </span>
+                    <span className="truncate text-xs text-muted-foreground">
                       {user?.email || 'user@example.com'}
-                    </p>
+                    </span>
                   </div>
-                </DropdownMenuLabel>
+                </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link href="/settings" className="w-full">Settings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/billing" className="w-full">Billing</Link>
-                </DropdownMenuItem>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => router.push('/settings')}>
+                    <UserCog />
+                    Account settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <Palette />
+                      Theme
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem onClick={() => setTheme('light')}>
+                        <Sun />
+                        Light
+                        {theme === 'light' && <Check className="ml-auto" />}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setTheme('dark')}>
+                        <Moon />
+                        Dark
+                        {theme === 'dark' && <Check className="ml-auto" />}
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => logout()}>
-                  Log out
+                <DropdownMenuItem
+                  onClick={() => {
+                    logout();
+                    router.push('/login');
+                  }}
+                >
+                  <LogOut />
+                  Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
