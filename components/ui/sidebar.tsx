@@ -10,11 +10,27 @@ import { Separator } from "@/components/ui/separator";
 
 const SIDEBAR_WIDTH = "11.5rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
+const MOBILE_BREAKPOINT = 768;
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+    const onChange = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    mql.addEventListener("change", onChange);
+    onChange();
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+  return isMobile;
+}
 
 type SidebarContext = {
   state: "expanded" | "collapsed";
   open: boolean;
   setOpen: (open: boolean) => void;
+  isMobile: boolean;
+  openMobile: boolean;
+  setOpenMobile: (open: boolean) => void;
   toggleSidebar: () => void;
 };
 
@@ -34,11 +50,17 @@ export const SidebarProvider = React.forwardRef<
     defaultOpen?: boolean;
   }
 >(({ defaultOpen = true, className, style, children, ...props }, ref) => {
+  const isMobile = useIsMobile();
   const [open, setOpen] = React.useState(defaultOpen);
+  const [openMobile, setOpenMobile] = React.useState(false);
 
   const toggleSidebar = React.useCallback(() => {
-    setOpen((open) => !open);
-  }, []);
+    if (isMobile) {
+      setOpenMobile((o) => !o);
+    } else {
+      setOpen((o) => !o);
+    }
+  }, [isMobile]);
 
   const state = open ? "expanded" : "collapsed";
 
@@ -47,9 +69,12 @@ export const SidebarProvider = React.forwardRef<
       state,
       open,
       setOpen,
+      isMobile,
+      openMobile,
+      setOpenMobile,
       toggleSidebar,
     }),
-    [state, open, toggleSidebar]
+    [state, open, isMobile, openMobile, toggleSidebar]
   );
 
   return (
@@ -79,7 +104,36 @@ export const Sidebar = React.forwardRef<
     collapsible?: "icon" | "none";
   }
 >(({ collapsible = "icon", className, children, ...props }, ref) => {
-  const { state } = useSidebar();
+  const { state, isMobile, openMobile, setOpenMobile } = useSidebar();
+
+  // Mobile: render an off-canvas drawer with a backdrop.
+  if (isMobile) {
+    return (
+      <>
+        <div
+          aria-hidden
+          onClick={() => setOpenMobile(false)}
+          className={cn(
+            "fixed inset-0 z-40 bg-black/50 transition-opacity duration-200 md:hidden",
+            openMobile ? "opacity-100" : "pointer-events-none opacity-0"
+          )}
+        />
+        <div
+          ref={ref}
+          data-sidebar="sidebar"
+          data-mobile="true"
+          className={cn(
+            "fixed inset-y-0 left-0 z-50 flex w-[var(--sidebar-width)] flex-col border-r border-border bg-sidebar transition-transform duration-200 ease-linear md:hidden",
+            openMobile ? "translate-x-0" : "-translate-x-full",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </div>
+      </>
+    );
+  }
 
   return (
     <div

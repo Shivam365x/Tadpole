@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -14,6 +15,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
@@ -74,6 +76,12 @@ export function Sidebar() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const { theme, setTheme } = useUIStore();
+  const { setOpenMobile } = useSidebar();
+
+  // Close the mobile drawer whenever the route changes.
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
 
   const getInitials = (name: string) => {
     return name
