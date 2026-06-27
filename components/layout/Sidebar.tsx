@@ -48,7 +48,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronUp, UserCog, Palette, LogOut, Sun, Moon, Check } from 'lucide-react';
+import { ChevronUp, UserCog, Palette, LogOut, Sun, Moon, Check, X } from 'lucide-react';
 import { GoToMenu } from '@/components/layout/GoToMenu';
 
 const mainNavItems = [
@@ -76,7 +76,7 @@ export function Sidebar() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const { theme, setTheme } = useUIStore();
-  const { setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   // Close the mobile drawer whenever the route changes.
   useEffect(() => {
@@ -100,7 +100,7 @@ export function Sidebar() {
             matching the top bar's bottom border to the pixel. */}
         <div className="border-b">
           <div className="flex h-12 items-center gap-2 px-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-            <Link href="/" className="flex items-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:justify-center">
+            <Link href="/" className="flex min-w-0 flex-1 items-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:justify-center">
               {/* Expanded: full horizontal lockup (light/dark wordmark swap) */}
               <span className="group-data-[collapsible=icon]:hidden">
                 <Image
@@ -130,6 +130,17 @@ export function Sidebar() {
                 className="hidden h-7 w-7 group-data-[collapsible=icon]:block"
               />
             </Link>
+            {/* Mobile-only close button — sits inside the drawer so it's always reachable */}
+            {isMobile && (
+              <button
+                type="button"
+                aria-label="Close sidebar"
+                onClick={() => setOpenMobile(false)}
+                className="ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
         </div>
       </SidebarHeader>

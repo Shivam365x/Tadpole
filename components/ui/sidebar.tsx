@@ -13,12 +13,17 @@ const SIDEBAR_WIDTH_ICON = "3rem";
 const MOBILE_BREAKPOINT = 768;
 
 function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false);
+  // Lazy initializer: on the client the correct value is known synchronously,
+  // so toggleSidebar() always takes the right path even before useEffect runs.
+  const [isMobile, setIsMobile] = React.useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth < MOBILE_BREAKPOINT;
+  });
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
     const onChange = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
     mql.addEventListener("change", onChange);
-    onChange();
+    onChange(); // re-sync in case viewport changed between SSR snapshot and mount
     return () => mql.removeEventListener("change", onChange);
   }, []);
   return isMobile;
@@ -381,7 +386,7 @@ export const SidebarTrigger = React.forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7", className)}
+      className={cn("relative z-50 h-7 w-7", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();

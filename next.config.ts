@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   // static content automatically, and image optimization stays enabled.
   // (No `output: 'export'` needed — that mode is only for generic static hosts.)
   reactStrictMode: true,
+  allowedDevOrigins: ['192.168.1.82'],
 };
 
 export default nextConfig;
