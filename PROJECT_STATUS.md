@@ -1,4 +1,4 @@
-# Tedpole Frontend - Project Status
+# tadpole Frontend - Project Status
 
 ## ✅ Completed
 
@@ -102,7 +102,7 @@
 
 ### To run the application:
 ```bash
-cd tedpole-frontend
+cd tadpole-frontend
 npm run dev
 ```
 

@@ -1,6 +1,6 @@
-# Tedpole — Backend API Specification
+# tadpole — Backend API Specification
 
-This document lists every API the Tedpole frontend expects from the backend. It
+This document lists every API the tadpole frontend expects from the backend. It
 is derived directly from the frontend service layer (`services/api/*.ts`) plus
 the new **SSO (Google + GitHub)** and **OTP login/signup** flows requested.
 
@@ -10,7 +10,7 @@ the new **SSO (Google + GitHub)** and **OTP login/signup** flows requested.
 
 | Item | Value |
 |------|-------|
-| Base URL | `https://api.tedpole.com/api/v1` (configurable via `NEXT_PUBLIC_API_URL`) |
+| Base URL | `https://api.tadpole.com/api/v1` (configurable via `NEXT_PUBLIC_API_URL`) |
 | Format | JSON (`Content-Type: application/json`) |
 | Auth | `Authorization: Bearer <accessToken>` on all protected routes |
 | Dates | ISO 8601 UTC strings (e.g. `2026-06-20T10:30:00Z`) |
@@ -174,7 +174,7 @@ The frontend sends the browser to `authUrl`. The provider redirects back to
 frontend** with a short-lived handoff (e.g. `?token=...` or sets an `HttpOnly`
 cookie):
 ```
-302 Location: https://app.tedpole.com/auth/callback?token=<accessToken>
+302 Location: https://app.tadpole.com/auth/callback?token=<accessToken>
 ```
 
 **Style B — SPA exchange (PKCE)**
@@ -182,7 +182,7 @@ cookie):
 `POST /auth/oauth/github/exchange`
 ```json
 // request
-{ "code": "<oauth-code>", "state": "<state>", "codeVerifier": "<pkce-verifier>", "redirectUri": "https://app.tedpole.com/auth/callback" }
+{ "code": "<oauth-code>", "state": "<state>", "codeVerifier": "<pkce-verifier>", "redirectUri": "https://app.tadpole.com/auth/callback" }
 // 200
 { "user": { "...": "..." }, "token": "<accessToken>", "refreshToken": "...", "isNewUser": false }
 ```

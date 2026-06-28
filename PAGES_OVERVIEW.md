@@ -1,4 +1,4 @@
-# Tedpole Pages Overview
+# tadpole Pages Overview
 
 A visual guide to all implemented pages and their features.
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -14,6 +15,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import {
   LayoutDashboard,
@@ -33,6 +35,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { useUIStore } from '@/stores/uiStore';
+import { authApi } from '@/services/api/auth.api';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getIdenticon } from '@/lib/identicon';
 import {
@@ -46,7 +49,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronUp, UserCog, Palette, LogOut, Sun, Moon, Check } from 'lucide-react';
+import { ChevronUp, UserCog, Palette, LogOut, Sun, Moon, Check, X } from 'lucide-react';
 import { GoToMenu } from '@/components/layout/GoToMenu';
 
 const mainNavItems = [
@@ -74,6 +77,12 @@ export function Sidebar() {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const { theme, setTheme } = useUIStore();
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  // Close the mobile drawer whenever the route changes.
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
 
   const getInitials = (name: string) => {
     return name
@@ -92,7 +101,7 @@ export function Sidebar() {
             matching the top bar's bottom border to the pixel. */}
         <div className="border-b">
           <div className="flex h-12 items-center gap-2 px-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-            <Link href="/" className="flex items-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:justify-center">
+            <Link href="/" className="flex min-w-0 flex-1 items-center group-data-[collapsible=icon]:w-full group-data-[collapsible=icon]:justify-center">
               {/* Expanded: full horizontal lockup (light/dark wordmark swap) */}
               <span className="group-data-[collapsible=icon]:hidden">
                 <Image
@@ -122,6 +131,17 @@ export function Sidebar() {
                 className="hidden h-7 w-7 group-data-[collapsible=icon]:block"
               />
             </Link>
+            {/* Mobile-only close button — sits inside the drawer so it's always reachable */}
+            {isMobile && (
+              <button
+                type="button"
+                aria-label="Close sidebar"
+                onClick={() => setOpenMobile(false)}
+                className="ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
         </div>
       </SidebarHeader>
@@ -273,7 +293,12 @@ export function Sidebar() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => {
+                  onClick={async () => {
+                    try {
+                      await authApi.logout();
+                    } catch {
+                      // best-effort server revocation; clear locally regardless
+                    }
                     logout();
                     router.push('/login');
                   }}

@@ -47,7 +47,7 @@ export const useUIStore = create<UIState>()(
       },
     }),
     {
-      name: 'tedpole-ui',
+      name: 'tadpole-ui',
       onRehydrateStorage: () => (state) => {
         // Apply theme on rehydration
         if (state && typeof window !== 'undefined') {

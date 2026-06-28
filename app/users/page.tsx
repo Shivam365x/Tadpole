@@ -17,7 +17,7 @@ export default function UsersPage() {
   const users = [
     {
       name: 'John Doe',
-      email: 'john.doe@tedpole.com',
+      email: 'john.doe@tadpole.com',
       role: 'admin',
       status: 'active',
       avatar: 'JD',
@@ -25,7 +25,7 @@ export default function UsersPage() {
     },
     {
       name: 'Jane Smith',
-      email: 'jane.smith@tedpole.com',
+      email: 'jane.smith@tadpole.com',
       role: 'developer',
       status: 'active',
       avatar: 'JS',
@@ -33,7 +33,7 @@ export default function UsersPage() {
     },
     {
       name: 'Bob Wilson',
-      email: 'bob.wilson@tedpole.com',
+      email: 'bob.wilson@tadpole.com',
       role: 'developer',
       status: 'active',
       avatar: 'BW',
@@ -41,7 +41,7 @@ export default function UsersPage() {
     },
     {
       name: 'Alice Brown',
-      email: 'alice.brown@tedpole.com',
+      email: 'alice.brown@tadpole.com',
       role: 'viewer',
       status: 'active',
       avatar: 'AB',
@@ -49,7 +49,7 @@ export default function UsersPage() {
     },
     {
       name: 'Charlie Davis',
-      email: 'charlie.davis@tedpole.com',
+      email: 'charlie.davis@tadpole.com',
       role: 'developer',
       status: 'invited',
       avatar: 'CD',

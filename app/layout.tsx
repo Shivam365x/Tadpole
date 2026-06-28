@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Tedpole - AI-Augmented DevOps Platform",
+  title: "tadpole - AI-Augmented DevOps Platform",
   description: "Unified platform for PR management, incidents, deployments, and infrastructure monitoring",
 };
 
