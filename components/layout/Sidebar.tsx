@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { useUIStore } from '@/stores/uiStore';
+import { authApi } from '@/services/api/auth.api';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getIdenticon } from '@/lib/identicon';
 import {
@@ -292,7 +293,12 @@ export function Sidebar() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => {
+                  onClick={async () => {
+                    try {
+                      await authApi.logout();
+                    } catch {
+                      // best-effort server revocation; clear locally regardless
+                    }
                     logout();
                     router.push('/login');
                   }}

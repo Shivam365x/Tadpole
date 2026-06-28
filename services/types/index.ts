@@ -6,6 +6,15 @@ export interface User {
   avatar?: string;
   role: 'admin' | 'developer' | 'viewer';
   workspaceId: string;
+  emailVerified?: boolean;
+  displayName?: string;
+  bio?: string;
+  jobTitle?: string;
+  company?: string;
+  location?: string;
+  timezone?: string;
+  phoneNumber?: string;
+  website?: string;
 }
 
 export interface LoginCredentials {
