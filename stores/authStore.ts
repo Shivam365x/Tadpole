@@ -93,7 +93,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: 'tedpole-auth',
+      name: 'tadpole-auth',
     }
   )
 );

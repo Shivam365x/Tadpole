@@ -60,7 +60,7 @@ export function AuthShell({ title, subtitle, children, footer }: AuthShellProps)
         </div>
 
         <div className="relative z-10 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Tedpole. All rights reserved.
+          © {new Date().getFullYear()} tadpole. All rights reserved.
         </div>
       </div>
 

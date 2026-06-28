@@ -127,7 +127,7 @@ export default function LoginPage() {
   return (
     <AuthShell
       title="Welcome back"
-      subtitle="Sign in to your Tedpole workspace."
+      subtitle="Sign in to your tadpole workspace."
       footer={
         <>
           Don&apos;t have an account?{' '}

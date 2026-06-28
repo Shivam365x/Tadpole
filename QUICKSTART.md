@@ -1,6 +1,6 @@
-# Tedpole - Quick Start Guide
+# tadpole - Quick Start Guide
 
-Get up and running with the Tedpole frontend in 5 minutes!
+Get up and running with the tadpole frontend in 5 minutes!
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ Get up and running with the Tedpole frontend in 5 minutes!
 ### 1. Install Dependencies
 
 ```bash
-cd tedpole-frontend
+cd tadpole-frontend
 npm install
 ```
 
@@ -258,4 +258,4 @@ getAll: async () => {
 }
 ```
 
-That's it! You're ready to explore and extend the Tedpole frontend. Happy coding! 🚀
+That's it! You're ready to explore and extend the tadpole frontend. Happy coding! 🚀

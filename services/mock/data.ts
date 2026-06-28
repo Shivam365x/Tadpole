@@ -18,7 +18,7 @@ import {
 export const mockUsers: User[] = [
   {
     id: '1',
-    email: 'john.doe@tedpole.com',
+    email: 'john.doe@tadpole.com',
     name: 'John Doe',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
     role: 'admin',
@@ -26,7 +26,7 @@ export const mockUsers: User[] = [
   },
   {
     id: '2',
-    email: 'jane.smith@tedpole.com',
+    email: 'jane.smith@tadpole.com',
     name: 'Jane Smith',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane',
     role: 'developer',
@@ -372,7 +372,7 @@ export const mockIntegrations: Integration[] = [
     type: 'github',
     status: 'connected',
     connectedAt: '2024-01-15T10:00:00Z',
-    config: { org: 'tedpole-inc', repos: ['frontend-app', 'backend-api'] },
+    config: { org: 'tadpole-inc', repos: ['frontend-app', 'backend-api'] },
   },
   {
     id: 'int-2',
@@ -380,7 +380,7 @@ export const mockIntegrations: Integration[] = [
     type: 'slack',
     status: 'connected',
     connectedAt: '2024-01-10T10:00:00Z',
-    config: { workspace: 'tedpole', channel: '#alerts' },
+    config: { workspace: 'tadpole', channel: '#alerts' },
   },
   {
     id: 'int-3',

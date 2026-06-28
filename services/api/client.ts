@@ -1,5 +1,5 @@
 /**
- * Lightweight fetch client for the Tedpole backend.
+ * Lightweight fetch client for the tadpole backend.
  *
  * - Prefixes requests with the API base + version.
  * - Attaches the bearer access token from the auth store.

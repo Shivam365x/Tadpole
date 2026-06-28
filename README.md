@@ -1,4 +1,4 @@
-# Tedpole - AI-Augmented DevOps Platform
+# tadpole - AI-Augmented DevOps Platform
 
 A production-quality frontend application for a comprehensive DevOps operations platform that combines PR management, incident tracking, deployment monitoring, cost analytics, and AI-powered insights.
 
@@ -45,7 +45,7 @@ npm start
 ## 🏗️ Project Structure
 
 ```
-tedpole-frontend/
+tadpole-frontend/
 ├── app/                      # Next.js App Router pages
 │   ├── page.tsx             # Dashboard
 │   ├── login/               # Auth pages
