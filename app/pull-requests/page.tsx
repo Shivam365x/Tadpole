@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -16,10 +16,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Search, AlertCircle, CheckCircle, Clock, Sparkles, Plus, Filter, Github } from 'lucide-react';
+import { Search, AlertCircle, CheckCircle, Clock, Sparkles, Plus, Filter, Github, RefreshCw } from 'lucide-react';
 import { usePullRequests, useApprovePR } from '@/hooks/usePullRequests';
-import { useGithubConnection } from '@/hooks/useGithub';
-import { integrationsApi, GitHubPullRequest } from '@/services/api/integrations.api';
+import { useGithubConnection, useGithubPullRequests } from '@/hooks/useGithub';
+import { GitHubPullRequest } from '@/services/api/integrations.api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -59,20 +59,16 @@ export default function PullRequestsPage() {
   const { data: mockPRs, isLoading: mockLoading } = usePullRequests();
   const approveMutation = useApprovePR();
 
-  const [ghPRs, setGhPRs] = useState<PRView[] | null>(null);
-  const [ghLoading, setGhLoading] = useState(false);
-
-  useEffect(() => {
-    if (connected !== true) return;
-    setGhLoading(true);
-    integrationsApi
-      .githubPullRequests('all')
-      .then((r) => setGhPRs(r.items.map(mapGithubPR)))
-      .catch(() => setGhPRs([]))
-      .finally(() => setGhLoading(false));
-  }, [connected]);
+  const ghQuery = useGithubPullRequests(connected === true);
+  const ghPRs: PRView[] | null = ghQuery.data ? ghQuery.data.items.map(mapGithubPR) : null;
+  const ghLoading = ghQuery.isLoading;
 
   const usingGithub = connected === true && ghPRs !== null;
+
+  const refreshing = ghQuery.isFetching;
+  const handleRefresh = () => {
+    if (connected === true) ghQuery.refetch();
+  };
 
   const allPRs: PRView[] = useMemo(() => {
     if (usingGithub) return ghPRs as PRView[];
@@ -157,6 +153,10 @@ export default function PullRequestsPage() {
             onTabChange={setActiveTab}
             actionButtons={
               <>
+                <Button size="sm" variant="outline" onClick={handleRefresh} disabled={connected !== true || refreshing}>
+                  <RefreshCw className={`mr-1 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                  Refresh
+                </Button>
                 <Button size="sm" variant="outline">
                   <Filter className="mr-1 h-4 w-4" />
                   Filter

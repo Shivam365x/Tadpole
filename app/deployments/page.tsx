@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Clock, Plus, Filter, Github } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Plus, Filter, Github, RefreshCw } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { useGithubConnection } from '@/hooks/useGithub';
-import { integrationsApi, GitHubDeployment } from '@/services/api/integrations.api';
+import { useGithubConnection, useGithubDeployments } from '@/hooks/useGithub';
+import { GitHubDeployment } from '@/services/api/integrations.api';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type DeployView = {
@@ -46,18 +46,16 @@ export default function DeploymentsPage() {
   const [activeTab, setActiveTab] = useState('all');
   const { connected } = useGithubConnection();
 
-  const [ghDeployments, setGhDeployments] = useState<DeployView[] | null>(null);
-  const [ghLoading, setGhLoading] = useState(false);
+  const ghQuery = useGithubDeployments(connected === true);
+  const ghDeployments: DeployView[] | null = ghQuery.data
+    ? ghQuery.data.items.map(mapGithubDeployment)
+    : null;
+  const ghLoading = ghQuery.isLoading;
 
-  useEffect(() => {
-    if (connected !== true) return;
-    setGhLoading(true);
-    integrationsApi
-      .githubDeployments()
-      .then((r) => setGhDeployments(r.items.map(mapGithubDeployment)))
-      .catch(() => setGhDeployments([]))
-      .finally(() => setGhLoading(false));
-  }, [connected]);
+  const refreshing = ghQuery.isFetching;
+  const handleRefresh = () => {
+    if (connected === true) ghQuery.refetch();
+  };
 
   const usingGithub = connected === true && ghDeployments !== null;
   const source = usingGithub ? (ghDeployments as DeployView[]) : MOCK_DEPLOYMENTS;
@@ -110,6 +108,10 @@ export default function DeploymentsPage() {
             onTabChange={setActiveTab}
             actionButtons={
               <>
+                <Button size="sm" variant="outline" onClick={handleRefresh} disabled={connected !== true || refreshing}>
+                  <RefreshCw className={`mr-1 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+                  Refresh
+                </Button>
                 <Button size="sm" variant="outline">
                   <Filter className="mr-1 h-4 w-4" />
                   Filter
