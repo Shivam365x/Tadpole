@@ -20,6 +20,7 @@ import { Search, AlertCircle, CheckCircle, Clock, Sparkles, Plus, Filter, Github
 import { usePullRequests, useApprovePR } from '@/hooks/usePullRequests';
 import { useGithubConnection } from '@/hooks/useGithub';
 import { integrationsApi, GitHubPullRequest } from '@/services/api/integrations.api';
+import { Skeleton } from '@/components/ui/skeleton';
 import { formatDistanceToNow } from 'date-fns';
 
 type PRView = {
@@ -88,7 +89,14 @@ export default function PullRequestsPage() {
     }));
   }, [usingGithub, ghPRs, mockPRs]);
 
-  const isLoading = usingGithub ? ghLoading : mockLoading;
+  // Show skeletons while we don't yet know the data source:
+  //  - connection status still resolving (null), or
+  //  - GitHub connected but its data hasn't arrived, or
+  //  - falling back to local data that's still loading.
+  const showSkeleton =
+    connected === null ||
+    (connected === true && (ghLoading || ghPRs === null)) ||
+    (connected === false && mockLoading);
 
   const filteredPRs = allPRs.filter((pr) => {
     const matchesSearch =
@@ -174,25 +182,25 @@ export default function PullRequestsPage() {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.status === 'open').length}</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-10" /> : <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.status === 'open').length}</div>}
                     <div className="text-xs text-muted-foreground mt-1">Open PRs</div>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.status === 'open' && pr.ciStatus === 'failed').length}</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-10" /> : <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.status === 'open' && pr.ciStatus === 'failed').length}</div>}
                     <div className="text-xs text-muted-foreground mt-1">Blocked</div>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.status === 'open' && pr.approvals === 0).length}</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-10" /> : <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.status === 'open' && pr.approvals === 0).length}</div>}
                     <div className="text-xs text-muted-foreground mt-1">Awaiting Review</div>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.aiCount > 0).length}</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-10" /> : <div className="text-2xl font-bold">{allPRs.filter((pr) => pr.aiCount > 0).length}</div>}
                     <div className="text-xs text-muted-foreground mt-1">AI Suggestions</div>
                   </CardContent>
                 </Card>
@@ -214,8 +222,18 @@ export default function PullRequestsPage() {
               {/* Main Table */}
               <Card className="border-border">
                 <CardContent className="p-0">
-                  {isLoading ? (
-                    <div className="text-center py-8 text-muted-foreground">Loading pull requests...</div>
+                  {showSkeleton ? (
+                    <div className="space-y-2 p-4">
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="flex items-center gap-4">
+                          <Skeleton className="h-5 flex-1" />
+                          <Skeleton className="h-5 w-24" />
+                          <Skeleton className="h-5 w-20" />
+                          <Skeleton className="h-5 w-16" />
+                          <Skeleton className="h-7 w-16" />
+                        </div>
+                      ))}
+                    </div>
                   ) : filteredPRs.length === 0 ? (
                     <div className="text-center py-8 text-muted-foreground">
                       {usingGithub ? 'No pull requests found on GitHub.' : 'No pull requests.'}

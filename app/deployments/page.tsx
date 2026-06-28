@@ -11,6 +11,7 @@ import { CheckCircle, XCircle, Clock, Plus, Filter, Github } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns';
 import { useGithubConnection } from '@/hooks/useGithub';
 import { integrationsApi, GitHubDeployment } from '@/services/api/integrations.api';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type DeployView = {
   id: string;
@@ -60,6 +61,9 @@ export default function DeploymentsPage() {
 
   const usingGithub = connected === true && ghDeployments !== null;
   const source = usingGithub ? (ghDeployments as DeployView[]) : MOCK_DEPLOYMENTS;
+
+  // Skeleton while resolving connection or loading GitHub deployments.
+  const showSkeleton = connected === null || (connected === true && (ghLoading || ghDeployments === null));
 
   const deployments = useMemo(
     () =>
@@ -131,25 +135,25 @@ export default function DeploymentsPage() {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold">{source.length}</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-10" /> : <div className="text-2xl font-bold">{source.length}</div>}
                     <div className="text-xs text-muted-foreground mt-1">Total Deployments</div>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold text-green-500">{successRate}%</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-12" /> : <div className="text-2xl font-bold text-green-500">{successRate}%</div>}
                     <div className="text-xs text-muted-foreground mt-1">Success Rate</div>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold text-blue-500">{inProgress}</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-8" /> : <div className="text-2xl font-bold text-blue-500">{inProgress}</div>}
                     <div className="text-xs text-muted-foreground mt-1">In Progress</div>
                   </CardContent>
                 </Card>
                 <Card className="border-border">
                   <CardContent className="p-4">
-                    <div className="text-2xl font-bold">{source.length}</div>
+                    {showSkeleton ? <Skeleton className="h-7 w-10" /> : <div className="text-2xl font-bold">{source.length}</div>}
                     <div className="text-xs text-muted-foreground mt-1">Recent</div>
                   </CardContent>
                 </Card>
@@ -158,8 +162,21 @@ export default function DeploymentsPage() {
               {/* Deployments List */}
               <Card className="border-border">
                 <CardContent className="p-3">
-                  {ghLoading ? (
-                    <div className="py-8 text-center text-muted-foreground">Loading deployments…</div>
+                  {showSkeleton ? (
+                    <div className="space-y-2">
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="flex items-center justify-between p-3 border border-border rounded">
+                          <div className="flex items-center space-x-3">
+                            <Skeleton className="h-5 w-5 rounded-full" />
+                            <div className="space-y-1.5">
+                              <Skeleton className="h-4 w-40" />
+                              <Skeleton className="h-3 w-24" />
+                            </div>
+                          </div>
+                          <Skeleton className="h-5 w-16" />
+                        </div>
+                      ))}
+                    </div>
                   ) : deployments.length === 0 ? (
                     <div className="py-8 text-center text-muted-foreground">
                       {usingGithub
