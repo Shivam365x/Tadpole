@@ -5,6 +5,7 @@ A production-quality frontend application for a comprehensive DevOps operations 
 ## 🚀 Features
 
 - **Pull Request Management** - Manage GitHub/GitLab PRs with AI-suggested fixes
+- **OnBoard Clusters** - onboard the actual kubernetes cluster to manage resources.
 - **Incident Management** - Track and resolve incidents with AI root cause analysis
 - **Deployment Tracking** - Monitor deployments across environments
 - **Cost Monitoring** - Track cloud costs with anomaly detection
